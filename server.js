@@ -9,7 +9,7 @@ var server = http.createServer(function(req, res){
 		if (req.method == 'GET') {
 			response = getPictures();
 		} else if (req.method == 'POST') {
-			/*TODO http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/*/
+			/* TODO http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/ */
 			response = postPictures();
 		}
 	} else if (req.url == '/movies') {
