@@ -6,35 +6,36 @@ var server = http.createServer(function(req, res){
 	
 	var response = '{}';
 	var data = '';
-	if (req.url == '/pictures') {
-		if (req.method == 'GET') {
+	var urlArr = req.url.split('/');
+	console.log("urlArr", urlArr);
+	if (req.method == 'GET') {
+		if (urlArr[1] == 'pictures') {
 			response = getPictures();
-			res.end(response);
-		} else if (req.method == 'POST') {
-			/* TODO http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/ */
-			req.on('data', function(chunk) {
-				data += chunk.toString();
-				console.log("chunk: ", chunk.toString());
-			});
-			req.on('end', function() {
-				response = postPictures(JSON.parse(data));
-				res.end(response);
-			});
-
-		}
-	} else if (req.url == '/movies') {
-		if (req.method == 'GET') {
+		} else if (urlArr[1] == 'movies') {
 			response = getMovies();
-			res.end(response);
-		} else if (req.method == 'POST') {
-			req.on('data', function(chunk) {
-				data += chunk.toString();
-			});
-			req.on('end', function() {
-				response = postMovies(JSON.parse(data));
-				res.end(response);
-			});
 		}
+		res.end(response);
+	} else if (req.method == 'POST') {
+		/* TODO http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/ */
+		req.on('data', function(chunk) {
+			data += chunk.toString();
+			console.log("chunk: ", chunk.toString());
+		});
+		req.on('end', function() {
+			if (urlArr[1] == 'pictures') {
+				response = postPictures(JSON.parse(data));
+			} else if (urlArr[1] == 'movies') {
+				response = postMovies(JSON.parse(data));
+			}
+			res.end(response);
+		});
+	} else if (req.method == 'DELETE') {
+		if (urlArr[1] == 'pictures') {
+			response = deletePicture(urlArr[2]);
+		} else if (urlArr[1] == 'movies') {
+			response = deleteMovie(urlArr[2]);
+		}
+		res.end(response);
 	}
 });
 
@@ -57,8 +58,20 @@ function getMovies() {
 
 function postPictures(picture) {
 	pictures.push(picture.filename);
+	return JSON.stringify({count: pictures.length, pictures: pictures});
 }
 
 function postMovies(movie) {
 	movies.push(movie.filename);
+	return JSON.stringify({count: movies.length, movies: movies});
+}
+
+function deletePicture(picture) {
+	pictures.splice(pictures.indexOf(picture), 1);
+	return JSON.stringify({count: pictures.length, pictures: pictures});
+}
+
+function deleteMovie(movie) {
+	movies.splice(movies.indexOf(movie), 1);
+	return JSON.stringify({count: movies.length, movies: movies});
 }
