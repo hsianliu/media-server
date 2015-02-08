@@ -1,27 +1,41 @@
 var http = require("http");
 
 var server = http.createServer(function(req, res){
-	console.log("I got something ", req);
+	console.log("I got something ");
 	res.writeHead(200, {"Content-Type": "application/json"});
 	
 	var response = '{}';
+	var data = '';
 	if (req.url == '/pictures') {
 		if (req.method == 'GET') {
 			response = getPictures();
+			res.end(response);
 		} else if (req.method == 'POST') {
 			/* TODO http://blog.frankgrimm.net/2010/11/howto-access-http-message-body-post-data-in-node-js/ */
-			response = postPictures();
+			req.on('data', function(chunk) {
+				data += chunk.toString();
+				console.log("chunk: ", chunk.toString());
+			});
+			req.on('end', function() {
+				response = postPictures(JSON.parse(data));
+				res.end(response);
+			});
+
 		}
 	} else if (req.url == '/movies') {
 		if (req.method == 'GET') {
 			response = getMovies();
+			res.end(response);
 		} else if (req.method == 'POST') {
-			response = postMovies();
+			req.on('data', function(chunk) {
+				data += chunk.toString();
+			});
+			req.on('end', function() {
+				response = postMovies(JSON.parse(data));
+				res.end(response);
+			});
 		}
 	}
-	
-	res.end(response);
-
 });
 
 server.listen(8080);
@@ -42,9 +56,9 @@ function getMovies() {
 }
 
 function postPictures(picture) {
-	pictures.push(picture);
+	pictures.push(picture.filename);
 }
 
 function postMovies(movie) {
-	movies.push(movie);
+	movies.push(movie.filename);
 }
