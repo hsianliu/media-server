@@ -1,3 +1,4 @@
+var _ = require("lodash");
 var http = require("http");
 
 var server = http.createServer(function(req, res){
@@ -23,9 +24,9 @@ var server = http.createServer(function(req, res){
 		});
 		req.on('end', function() {
 			if (urlArr[1] == 'pictures') {
-				response = postPictures(JSON.parse(data));
+				response = postPicture(JSON.parse(data));
 			} else if (urlArr[1] == 'movies') {
-				response = postMovies(JSON.parse(data));
+				response = postMovie(JSON.parse(data));
 			}
 			res.end(response);
 		});
@@ -36,6 +37,20 @@ var server = http.createServer(function(req, res){
 			response = deleteMovie(urlArr[2]);
 		}
 		res.end(response);
+	} else if (req.method == 'PUT') {
+		req.on('data', function(chunk) {
+			data += chunk.toString();
+			console.log("chunk: ", chunk.toString());
+		});
+		req.on('end', function() {
+			if (urlArr[1] == 'pictures') {
+				response = putPicture(urlArr[2], JSON.parse(data));
+			} else if (urlArr[1] == 'movies') {
+				response = putMovie(urlArr[2], JSON.parse(data));
+			}
+			res.end(response);
+		});
+		
 	}
 });
 
@@ -43,8 +58,18 @@ server.listen(8080);
 
 console.log("listening to 8080");
 
-var pictures = ["1.jpg", "2.jpg", "3.jpg"];
-var movies = ["a.avi" ,"b.avi", "c.avi", "d.avi"];
+var pictures = [
+	{key: _.uniqueId(), filename: "1.jpg", size: 100},
+	{key: _.uniqueId(), filename: "2.jpg", size: 200},
+	{key: _.uniqueId(), filename: "3.jpg", size: 300},
+];
+
+var movies = [
+	{key: _.uniqueId(), filename: "a.avi", size: 1000},
+	{key: _.uniqueId(), filename: "b.avi", size: 2000},
+	{key: _.uniqueId(), filename: "c.avi", size: 3000},
+];
+
 
 function getPictures() {
 	console.log("getPictures function");
@@ -56,22 +81,54 @@ function getMovies() {
 	return JSON.stringify({count: movies.length, movies: movies});
 }
 
-function postPictures(picture) {
-	pictures.push(picture.filename);
-	return JSON.stringify({count: pictures.length, pictures: pictures});
+function postPicture(picture) {
+	var obj = {key: _.uniqueId(), filename: picture.name, size: picture.size};
+	pictures.push(obj);
+	return JSON.stringify(obj); 
 }
 
-function postMovies(movie) {
-	movies.push(movie.filename);
-	return JSON.stringify({count: movies.length, movies: movies});
+function postMovie(movie) {
+	var obj = {key: _.uniqueId(), filename: movie.name, size: movie.size};
+	movies.push(obj);
+	return JSON.stringify(obj); 
 }
 
-function deletePicture(picture) {
-	pictures.splice(pictures.indexOf(picture), 1);
-	return JSON.stringify({count: pictures.length, pictures: pictures});
+function deletePicture(key) {
+	var idx = -1;
+	pictures.forEach(function(pic, index) {
+		if (pic.key == key) {
+			idx = index;
+		}
+	});
+	pictures.splice(idx, 1);
+	return getPictures(); 
 }
 
-function deleteMovie(movie) {
-	movies.splice(movies.indexOf(movie), 1);
-	return JSON.stringify({count: movies.length, movies: movies});
+function deleteMovie(key) {
+	_.remove(movies, {key: key});	
+	return getMovies(); 
+}
+
+function putPicture(key, obj) {
+	var picture = _.find(pictures, {key: key});
+	if (obj.filename) {
+		picture.filename = obj.filename;
+	}
+
+	if (obj.size) {	
+		picture.size = obj.size;
+	}
+	return JSON.stringify(picture);
+}
+
+function putMovie(key, obj) {
+	var movie = _.find(movies, {key: key});
+	if (obj.filename) {
+		movie.filename = obj.filename;
+	}
+
+	if (obj.size) {	
+		movie.size = obj.size;
+	}
+	return JSON.stringify(movie);
 }

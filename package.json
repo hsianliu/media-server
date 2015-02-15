@@ -1,0 +1,15 @@
+{
+  "name": "webserver",
+  "version": "0.0.1",
+  "description": "a REST server serving up files",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Hsi-An Liu Moore",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "~3.2.0"
+  }
+}
