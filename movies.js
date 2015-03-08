@@ -8,7 +8,6 @@ var movies = [
 
 module.exports = {
     get: function() {
-        console.log("getMovies function");
         return JSON.stringify({count: movies.length, movies: movies});
     },
 

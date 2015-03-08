@@ -8,7 +8,6 @@ var pictures = [
 
 module.exports = {
     get: function() {
-        console.log("getPictures function");
         return JSON.stringify({count: pictures.length, pictures: pictures});
     },
 
