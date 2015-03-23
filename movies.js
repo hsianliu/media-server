@@ -8,13 +8,13 @@ var movies = [
 
 module.exports = {
     get: function() {
-        return JSON.stringify({count: movies.length, movies: movies});
+        return {count: movies.length, movies: movies};
     },
 
     post: function(movie) {
         var obj = {key: _.uniqueId(), filename: movie.name, size: movie.size};
         movies.push(obj);
-        return JSON.stringify(obj);
+        return obj;
     },
 
     delete: function(key) {
@@ -31,6 +31,6 @@ module.exports = {
         if (obj.size) {
             movie.size = obj.size;
         }
-        return JSON.stringify(movie);
+        return movie;
     }
 };

@@ -8,13 +8,13 @@ var pictures = [
 
 module.exports = {
     get: function() {
-        return JSON.stringify({count: pictures.length, pictures: pictures});
+        return {count: pictures.length, pictures: pictures};
     },
 
     post: function(picture) {
         var obj = {key: _.uniqueId(), filename: picture.name, size: picture.size};
         pictures.push(obj);
-        return JSON.stringify(obj);
+        return obj;
     },
 
     delete: function(key) {
@@ -37,6 +37,6 @@ module.exports = {
         if (obj.size) {
             picture.size = obj.size;
         }
-        return JSON.stringify(picture);
+        return picture;
     }
 };

@@ -3,19 +3,13 @@ var movies = require('../movies');
 
 describe('movies', function() {
     describe('get', function() {
-        var getJSON;
+        var obj;
 
         beforeEach(function() {
-            getJSON = movies.get();
-
+            obj = movies.get();
         });
 
-        it('should return a string', function() {
-            assert(typeof getJSON == 'string');
-        });
-
-        it('should return JSON', function() {
-            var obj = JSON.parse(getJSON);
+        it('should return object', function() {
             assert(typeof obj == 'object');
             assert(obj.count == 3);
         });
