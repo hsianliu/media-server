@@ -4,11 +4,12 @@ var pictures = require("./pictures");
 var movies = require("./movies");
 var fs = require("fs");
 var express = require("express");
+var bodyParser = require('body-parser')
 
 var app = express();
-app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+
+app.use(express.static('client'));
+app.use(bodyParser.json());
 
 app.get('/pictures', function(req, res) {
     var pix = pictures.get();
@@ -16,12 +17,12 @@ app.get('/pictures', function(req, res) {
 });
 
 app.post('/pictures', function(req, res) {
-    var picture = pictures.post(JSON.parse(req.body));
+    var picture = pictures.post(req.body);
     res.json(picture);
 });
 
 app.put('/pictures/:id', function(req,res) {
-    var picture = pictures.put(req.params.id, JSON.parse(req.body));
+    var picture = pictures.put(req.params.id, req.body);
     res.json(picture);
 });
 
@@ -36,12 +37,13 @@ app.get('/movies', function(req, res) {
 });
 
 app.post('/movies', function(req, res) {
-    var movie = movies.post(JSON.parse(req.body));
+    console.log('hey hey', req.body);
+    var movie = movies.post(req.body);
     res.json(movie);
 });
 
 app.put('/movies/:id', function(req,res) {
-    var movie = movies.put(req.params.id, JSON.parse(req.body));
+    var movie = movies.put(req.params.id, req.body);
     res.json(movie);
 });
 
