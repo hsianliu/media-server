@@ -4,8 +4,6 @@ var View = require('./View');
 function List(arg1, arg2, arg3) {
     View.call(this);
 
-    console.log(this.bananas);
-
     this.el = document.querySelector('.list');
 }
 
