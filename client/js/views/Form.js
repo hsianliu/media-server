@@ -1,6 +1,7 @@
 var fs = require('fs');
 var View = require('./View');
 var request = require('request');
+var events = require('../libs/events');
 
 function Form() {
     View.call(this);
@@ -23,7 +24,9 @@ Form.prototype.buttonClicked = function() {
         size: this.el.querySelector('[name="size"]').value
     };
 
-    request.post({url: 'http://localhost:8080/movies', json: data});
+    request.post({url: 'http://localhost:8080/movies', json: data}, function() {
+        events.trigger('refresh-list');
+    });
 };
 
 module.exports = Form;

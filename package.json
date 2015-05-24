@@ -18,5 +18,8 @@
     "transform": [
       "brfs"
     ]
+  },
+  "devDependencies": {
+    "ampersand-events": "1.1.1"
   }
 }
