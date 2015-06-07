@@ -2,6 +2,7 @@ var fs = require('fs');
 var request = require('request');
 var View = require('./View');
 var events = require('../libs/events');
+var ListItem = require('./ListItem');
 
 function List(arg1, arg2, arg3) {
     View.call(this);
@@ -23,12 +24,11 @@ List.prototype.render = function(data) {
 
     var ul = this.el.querySelector('ul');
 
-    var items = '';
     data.movies.forEach(function (movie){
-        items += '<li>' + movie.filename + '</li>';
-    });
+        var listItem = new ListItem(movie);
 
-    ul.innerHTML = items;
+        ul.appendChild(listItem.el);
+    });
 };
 
 List.prototype.refresh = function() {
