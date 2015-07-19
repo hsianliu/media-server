@@ -7,8 +7,24 @@ var movies = [
 ];
 
 module.exports = {
-    get: function() {
-        return {count: movies.length, movies: movies};
+    get: function(key) {
+        if (key) {
+            var movie;
+
+            movies.forEach(function(mov) {
+                if (mov.key == key) {
+                    movie = mov;
+                }
+            });
+
+            if (movie) {
+                return movie;
+            } else {
+                throw new Error("movie not found: key: " + key);
+            }
+        } else {
+            return {count: movies.length, movies: movies};
+        }
     },
 
     post: function(movie) {

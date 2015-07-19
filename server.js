@@ -16,6 +16,11 @@ app.get('/pictures', function(req, res) {
     res.json(pix);
 });
 
+app.get('/pictures/:id', function(req, res) {
+    var pix = pictures.get(req.params.id);
+    res.json(pix);
+});
+
 app.post('/pictures', function(req, res) {
     var picture = pictures.post(req.body);
     res.json(picture);
@@ -34,6 +39,11 @@ app.delete('/pictures/:id', function(req, res) {
 app.get('/movies', function(req, res) {
     var mov = movies.get();
     res.json(mov);
+});
+
+app.get('/movies/:id', function(req, res) {
+    var pix = movies.get(req.params.id);
+    res.json(pix);
 });
 
 app.post('/movies', function(req, res) {

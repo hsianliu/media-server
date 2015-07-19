@@ -58,7 +58,7 @@ form {
     text-align: right;
 }
 
-span.delete:hover {
+span.delete:hover, span.edit:hover {
     color: blue;
     cursor: pointer;
 }

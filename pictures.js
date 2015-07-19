@@ -7,8 +7,24 @@ var pictures = [
 ];
 
 module.exports = {
-    get: function() {
-        return {count: pictures.length, pictures: pictures};
+    get: function(key) {
+        if (key) {
+            var picture;
+
+            pictures.forEach(function(pic) {
+                if (pic.key == key) {
+                    picture = pic;
+                }
+            });
+
+            if (picture) {
+                return picture;
+            } else {
+                throw new Error("picture not found: key: " + key);
+            }
+        } else {
+            return {count: pictures.length, pictures: pictures};
+        }
     },
 
     post: function(picture) {
