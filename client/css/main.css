@@ -57,3 +57,8 @@ form {
     flex: 0 0 80px;
     text-align: right;
 }
+
+span.delete:hover {
+    color: blue;
+    cursor: pointer;
+}
