@@ -7,8 +7,8 @@ var ListItem = require('./ListItem');
 function List(arg1, arg2, arg3) {
     View.call(this);
 
-    this.el = document.querySelector('.list');
-
+    this.el.classList.add('list');
+    
     events.on('refresh-list', this.refresh.bind(this));
 
     this.refresh();

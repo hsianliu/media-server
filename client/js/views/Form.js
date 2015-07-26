@@ -5,8 +5,9 @@ var events = require('../libs/events');
 
 function Form() {
     View.call(this);
-    this.el = document.querySelector('.form');
+    this.el.classList.add('form');
     events.on('edit-item', this.getItem.bind(this));
+    this.render();
 }
 
 Form.prototype = Object.create(View.prototype);

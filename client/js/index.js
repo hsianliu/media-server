@@ -5,4 +5,18 @@ var list = new List();
 
 var form = new Form();
 
-form.render();
+var main = document.querySelector('.main');
+
+window.addEventListener("hashchange", router, false);
+
+router();
+
+function router() {
+    if (location.hash === '#form') {
+        main.innerHTML = '';
+        main.appendChild(form.el);
+    } else {
+        main.innerHTML = '';
+        main.appendChild(list.el);
+    }
+}
