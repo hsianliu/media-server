@@ -24,18 +24,14 @@ ListItem.prototype.render = function(data) {
     this.deleteButton = this.el.querySelector('.delete');
     this.editButton = this.el.querySelector('.edit');
 
+    this.editButton.href = '#edit/' + this.key;
     this.deleteButton.addEventListener('click', this.delete.bind(this));
-    this.editButton.addEventListener('click', this.edit.bind(this));
 };
 
 ListItem.prototype.delete = function() {
     request.del({url: 'http://localhost:8080/movies/' + this.key}, function(err, res, data) {
         events.trigger('refresh-list');
     }.bind(this));
-};
-
-ListItem.prototype.edit = function() {
-    events.trigger('edit-item', this.key);
 };
 
 module.exports = ListItem;

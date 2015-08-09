@@ -7,6 +7,7 @@ function Form() {
     View.call(this);
     this.el.classList.add('form');
     events.on('edit-item', this.getItem.bind(this));
+    events.on('new-item', this.newItem.bind(this));
     this.render();
 }
 
@@ -35,13 +36,17 @@ Form.prototype.buttonClicked = function() {
         size: this.el.querySelector('[name="size"]').value
     };
 
-    if (this.item) {
+    if (this.item.key) {
         request.put({url: 'http://localhost:8080/movies/' + this.item.key, json: data}, function() {
             events.trigger('refresh-list');
+
+            window.location.hash = '';
         });
     } else {
         request.post({url: 'http://localhost:8080/movies', json: data}, function() {
             events.trigger('refresh-list');
+
+            window.location.hash = '';
         });
     }
 };
@@ -51,6 +56,10 @@ Form.prototype.getItem = function(key) {
         var item = JSON.parse(body);
         this.render(item);
     }.bind(this));
+};
+
+Form.prototype.newItem = function() {
+    this.render();
 };
 
 module.exports = Form;

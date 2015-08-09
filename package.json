@@ -10,9 +10,9 @@
   "author": "Hsi-An Liu Moore",
   "license": "MIT",
   "dependencies": {
-    "lodash": "~3.2.0",
-    "express": "~4.12.3",
-    "brfs": "~1.4.0"
+    "lodash": "3.2.0",
+    "express": "4.12.3",
+    "brfs": "1.4.0"
   },
   "browserify": {
     "transform": [
@@ -20,6 +20,7 @@
     ]
   },
   "devDependencies": {
-    "ampersand-events": "1.1.1"
+    "ampersand-events": "1.1.1",
+    "ampersand-router": "3.0.2"
   }
 }
